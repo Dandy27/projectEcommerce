@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projectecommerce/constants.dart';
+import 'package:projectecommerce/screens/sign_in/sign_in_screen.dart';
 import 'package:projectecommerce/size_config.dart';
 
 import '../components/splash_content.dart';
@@ -64,7 +65,8 @@ class _BodyState extends State<Body> {
                             (index) => buildDot(index: index)),
                       ),
                       Spacer(flex: 3,),
-                      DefaultButton(text: 'Continue', press: (){},),
+                      DefaultButton(text: 'Continue', press: (){Navigator.pushNamed(
+                          context, SignInScreen.routeName);},),
                       Spacer(),
                     ],
                   ),
