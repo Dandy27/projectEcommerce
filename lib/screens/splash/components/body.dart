@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
           children: [
             Expanded(
               flex: 3,
-              child: PageView.builder(
+              child: PageView.builder(scrollBehavior: const ScrollBehavior(),
                   onPageChanged: (value) {
                     setState(() {
                       currentPage = value;

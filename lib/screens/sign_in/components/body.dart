@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projectecommerce/components/socal_card.dart';
+import 'package:projectecommerce/constants.dart';
 import 'package:projectecommerce/screens/sign_in/components/sign_form.dart';
 
 import '../../../size_config.dart';
@@ -17,6 +18,8 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.04,),
+
                 Text(
                   'Welcome Back',
                   style: TextStyle(
@@ -29,7 +32,13 @@ class Body extends StatelessWidget {
                   "Sign in with your email and password \nor continue with social media",
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.08,
+                ),
                 SignForm(),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.05,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -46,38 +55,30 @@ class Body extends StatelessWidget {
                       press: () {},
                     )
                   ],
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account?",
+                      style:
+                          TextStyle(fontSize: getProportionateScreenWidth(16)),
+                    ),
+                    Text(
+                      " Sign Up",
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(16),
+                          color: kPrimaryColor),
+                    )
+                  ],
                 )
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SocalCard extends StatelessWidget {
-  const SocalCard({
-    Key? key,
-    required this.icon,
-    required this.press,
-  }) : super(key: key);
-
-  final String icon;
-  final VoidCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
-      child: Container(
-        margin: EdgeInsets.all(getProportionateScreenWidth(10)),
-        padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-        height: getProportionateScreenHeight(40),
-        width: getProportionateScreenWidth(40),
-        decoration: const BoxDecoration(
-            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-        child: SvgPicture.asset(icon),
       ),
     );
   }
