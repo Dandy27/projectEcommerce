@@ -10,13 +10,13 @@ class SplashContent extends StatelessWidget {
     required this.text,
     required this.image,
   }) : super(key: key);
-  final dynamic text, image;
+  final String? text, image;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Spacer(),
+        const Spacer(),
         Text(
           'DANDY',
           style: TextStyle(
@@ -24,12 +24,12 @@ class SplashContent extends StatelessWidget {
               color: kPrimaryColor,
               fontWeight: FontWeight.bold),
         ),
-        Text(text, textAlign: TextAlign.center,),
-        Spacer(
+        Text(text!, textAlign: TextAlign.center,),
+        const Spacer(
           flex: 2,
         ),
         Image.asset(
-          image,
+          image!,
           height: getProportionateScreenHeight(265),
           width: getProportionateScreenWidth(235),
         )

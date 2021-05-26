@@ -1,8 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projectecommerce/components/custom_surffix_icon.dart';
-import 'package:projectecommerce/components/default_button.dart';
-import 'package:projectecommerce/components/form_error.dart';
-import 'package:projectecommerce/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:projectecommerce/screens/sign_in/components/sign_form.dart';
 
 import '../../../size_config.dart';
 
@@ -15,22 +14,41 @@ class Body extends StatelessWidget {
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: Column(
-            children: [
-              Text(
-                'Welcome Back',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: getProportionateScreenWidth(28),
-                  fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'Welcome Back',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                "Sign in with your email and password \nor continue with social media",
-                textAlign: TextAlign.center,
-              ),
-              SignForm(),
-            ],
+                const Text(
+                  "Sign in with your email and password \nor continue with social media",
+                  textAlign: TextAlign.center,
+                ),
+                SignForm(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SocalCard(
+                      icon: 'assets/icons/google-icon.svg',
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: 'assets/icons/facebook-2.svg',
+                      press: () {},
+                    ),
+                    SocalCard(
+                      icon: 'assets/icons/twitter.svg',
+                      press: () {},
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -38,121 +56,28 @@ class Body extends StatelessWidget {
   }
 }
 
-class SignForm extends StatefulWidget {
-  @override
-  _SignFormState createState() => _SignFormState();
-}
+class SocalCard extends StatelessWidget {
+  const SocalCard({
+    Key? key,
+    required this.icon,
+    required this.press,
+  }) : super(key: key);
 
-class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
-  final List<String> errors = [];
+  final String icon;
+  final VoidCallback press;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Column(children: [
-          buildEmailFormField(),
-          SizedBox(
-            height: getProportionateScreenHeight(20),
-          ),
-          buildPasswordFormField(),
-          SizedBox(
-            height: getProportionateScreenHeight(20),
-          ),
-          FormError(errors: errors),
-          SizedBox(
-            height: getProportionateScreenHeight(20),
-          ),
-          DefaultButton(
-            text: 'Continue',
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-              }
-            },
-          ),
-        ]));
-  }
-
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      onSaved: (newValue) => password = newValue!,
-      onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kPassNullError)) {
-          setState(() {
-            errors.remove(kPassNullError);
-          });
-        } else if (value.length >= 8 && errors.contains(kShortPassError)) {
-          setState(() {
-            errors.remove(kShortPassError);
-          });
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty && !errors.contains(kPassNullError)) {
-          setState(() {
-            errors.add(kPassNullError);
-          });
-        } else if (value.length < 8 && !errors.contains(kShortPassError)) {
-          setState(() {
-            errors.add(kShortPassError);
-          });
-        }
-        return null;
-      },
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Enter your password',
-        labelText: 'Password',
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustonSurffixIcon(
-          svgIcon: 'assets/icons/Lock.svg',
-        ),
-      ),
-    );
-  }
-
-  TextFormField buildEmailFormField() {
-    return TextFormField(
-      onSaved: (newValue) => email = newValue!,
-      onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.remove(kEmailNullError);
-          });
-        } else if (emailValidatorRegExp.hasMatch(value) &&
-            errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.remove(kInvalidEmailError);
-          });
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty && !errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
-        } else if (!emailValidatorRegExp.hasMatch(value) &&
-            !errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.add(kInvalidEmailError);
-          });
-        }
-        return null;
-      },
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        hintText: 'Enter your email',
-        labelText: 'Email',
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustonSurffixIcon(
-          svgIcon: 'assets/icons/Mail.svg',
-        ),
+    return GestureDetector(
+      onTap: press,
+      child: Container(
+        margin: EdgeInsets.all(getProportionateScreenWidth(10)),
+        padding: EdgeInsets.all(getProportionateScreenWidth(12)),
+        height: getProportionateScreenHeight(40),
+        width: getProportionateScreenWidth(40),
+        decoration: const BoxDecoration(
+            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+        child: SvgPicture.asset(icon),
       ),
     );
   }
