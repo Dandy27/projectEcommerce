@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projectecommerce/components/custom_surffix_icon.dart';
 import 'package:projectecommerce/components/default_button.dart';
+import 'package:projectecommerce/components/form_error.dart';
+import 'package:projectecommerce/constants.dart';
 
 import '../../../size_config.dart';
 
@@ -42,29 +44,66 @@ class SignForm extends StatefulWidget {
 }
 
 class _SignFormState extends State<SignForm> {
-
   final _formKey = GlobalKey<FormState>();
+  late String email;
+  late String password;
   final List<String> errors = [];
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+        key: _formKey,
         child: Column(children: [
-      buildEmailFormField(),
-      SizedBox(
-        height: getProportionateScreenHeight(20),
-      ),
-      buildPasswordFormField(),
+          buildEmailFormField(),
           SizedBox(
             height: getProportionateScreenHeight(20),
           ),
-          DefaultButton(text: 'Continue', press: (){})
-    ]));
+          buildPasswordFormField(),
+          SizedBox(
+            height: getProportionateScreenHeight(20),
+          ),
+          FormError(errors: errors),
+          SizedBox(
+            height: getProportionateScreenHeight(20),
+          ),
+          DefaultButton(
+            text: 'Continue',
+            press: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+              }
+            },
+          ),
+        ]));
   }
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      onSaved: (newValue) => password = newValue!,
+      onChanged: (value) {
+        if (value.isNotEmpty && errors.contains(kPassNullError)) {
+          setState(() {
+            errors.remove(kPassNullError);
+          });
+        } else if (value.length >= 8 && errors.contains(kShortPassError)) {
+          setState(() {
+            errors.remove(kShortPassError);
+          });
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty && !errors.contains(kPassNullError)) {
+          setState(() {
+            errors.add(kPassNullError);
+          });
+        } else if (value.length < 8 && !errors.contains(kShortPassError)) {
+          setState(() {
+            errors.add(kShortPassError);
+          });
+        }
+        return null;
+      },
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Enter your password',
@@ -79,10 +118,29 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      validator: (value) {
-        if(value!.isEmpty){ // TODO LIST VERIFICAR OPERADOR
+      onSaved: (newValue) => email = newValue!,
+      onChanged: (value) {
+        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
           setState(() {
-            errors.add('Please enter your email');
+            errors.remove(kEmailNullError);
+          });
+        } else if (emailValidatorRegExp.hasMatch(value) &&
+            errors.contains(kInvalidEmailError)) {
+          setState(() {
+            errors.remove(kInvalidEmailError);
+          });
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty && !errors.contains(kEmailNullError)) {
+          setState(() {
+            errors.add(kEmailNullError);
+          });
+        } else if (!emailValidatorRegExp.hasMatch(value) &&
+            !errors.contains(kInvalidEmailError)) {
+          setState(() {
+            errors.add(kInvalidEmailError);
           });
         }
         return null;

@@ -51,26 +51,33 @@ class _BodyState extends State<Body> {
                       )),
             ),
             Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(splashData.length,
-                            (index) => buildDot(index: index)),
-                      ),
-                      Spacer(flex: 3,),
-                      DefaultButton(text: 'Continue', press: (){Navigator.pushNamed(
-                          context, SignInScreen.routeName);},),
-                      Spacer(),
-                    ],
-                  ),
-                ),),
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(20),
+                ),
+                child: Column(
+                  children: [
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          splashData.length, (index) => buildDot(index: index)),
+                    ),
+                    Spacer(
+                      flex: 3,
+                    ),
+                    DefaultButton(
+                      text: 'Continue',
+                      press: () {
+                        Navigator.pushNamed(context, SignInScreen.routeName);
+                      },
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
