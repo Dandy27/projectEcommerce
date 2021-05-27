@@ -14,10 +14,12 @@ class Body extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(children: [
-            SizedBox(height: SizeConfig.screenHeight * 0.04,),
-
+            SizedBox(
+              height: SizeConfig.screenHeight * 0.04,
+            ),
             Text(
               "Forgot Password",
               style: TextStyle(
@@ -29,7 +31,9 @@ class Body extends StatelessWidget {
               "Please enter your email and we will send \nyou a link to return toyour account",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: SizeConfig.screenHeight * 0.1,),
+            SizedBox(
+              height: SizeConfig.screenHeight * 0.1,
+            ),
             ForgotPassForm(),
           ]),
         ),
@@ -44,59 +48,74 @@ class ForgotPassForm extends StatefulWidget {
 }
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
+  final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   late String email;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-          onSaved: (newValue) => email = newValue!,
-          onChanged: (value) {
-            if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-              setState(() {
-                errors.remove(kEmailNullError);
-              });
-            } else if (emailValidatorRegExp.hasMatch(value) &&
-                errors.contains(kInvalidEmailError)) {
-              setState(() {
-                errors.remove(kInvalidEmailError);
-              });
-            }
-            // ignore: avoid_returning_null_for_void
-            return null;
-          },
-          validator: (value) {
-            if (value!.isEmpty && !errors.contains(kEmailNullError)) {
-              setState(() {
-                errors.add(kEmailNullError);
-              });
-            } else if (!emailValidatorRegExp.hasMatch(value) &&
-                !errors.contains(kInvalidEmailError)) {
-              setState(() {
-                errors.add(kInvalidEmailError);
-              });
-            }
-            return null;
-          },
-          keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-            hintText: 'Enter your email',
-            labelText: 'Email',
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            suffixIcon: CustonSurffixIcon(
-              svgIcon: 'assets/icons/Mail.svg',
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            onSaved: (newValue) => email = newValue!,
+            onChanged: (value) {
+              if (value.isNotEmpty && errors.contains(kEmailNullError)) {
+                setState(() {
+                  errors.remove(kEmailNullError);
+                });
+              } else if (emailValidatorRegExp.hasMatch(value) &&
+                  errors.contains(kInvalidEmailError)) {
+                setState(() {
+                  errors.remove(kInvalidEmailError);
+                });
+              }
+              // ignore: avoid_returning_null_for_void
+              return null;
+            },
+            validator: (value) {
+              if (value!.isEmpty && !errors.contains(kEmailNullError)) {
+                setState(() {
+                  errors.add(kEmailNullError);
+                });
+              } else if (!emailValidatorRegExp.hasMatch(value) &&
+                  !errors.contains(kInvalidEmailError)) {
+                setState(() {
+                  errors.add(kInvalidEmailError);
+                });
+              }
+              return null;
+            },
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              hintText: 'Enter your email',
+              labelText: 'Email',
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              suffixIcon: CustonSurffixIcon(
+                svgIcon: 'assets/icons/Mail.svg',
+              ),
             ),
           ),
-        ),
-        SizedBox(height: getProportionateScreenHeight(30),),
-        FormError(errors: errors),
-        SizedBox(height: SizeConfig.screenHeight * 0.1,),
-        DefaultButton(text: "Continue", press: () {}),
-        SizedBox(height: SizeConfig.screenHeight * 0.1,),
-
-        NoAccountText(),
-      ],
+          SizedBox(
+            height: getProportionateScreenHeight(30),
+          ),
+          FormError(errors: errors),
+          SizedBox(
+            height: SizeConfig.screenHeight * 0.1,
+          ),
+          DefaultButton(
+              text: "Continue",
+              press: () {
+                if (_formKey.currentState!.validate()) {
+                  //do what do you want to do
+                }
+              }),
+          SizedBox(
+            height: SizeConfig.screenHeight * 0.1,
+          ),
+          const NoAccountText(),
+        ],
+      ),
     );
   }
 }
