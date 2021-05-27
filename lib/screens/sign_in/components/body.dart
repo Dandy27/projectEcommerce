@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projectecommerce/components/no_account_text.dart';
 import 'package:projectecommerce/components/socal_card.dart';
-import 'package:projectecommerce/constants.dart';
 import 'package:projectecommerce/screens/sign_in/components/sign_form.dart';
 
 import '../../../size_config.dart';
@@ -18,8 +18,9 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.04,),
-
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.04,
+                ),
                 Text(
                   'Welcome Back',
                   style: TextStyle(
@@ -59,22 +60,7 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style:
-                          TextStyle(fontSize: getProportionateScreenWidth(16)),
-                    ),
-                    Text(
-                      " Sign Up",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(16),
-                          color: kPrimaryColor),
-                    )
-                  ],
-                )
+                const NoAccountText()
               ],
             ),
           ),
